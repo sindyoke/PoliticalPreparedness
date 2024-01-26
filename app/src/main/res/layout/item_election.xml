@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="election"
+            type="com.example.android.politicalpreparedness.network.models.Election" />
+
+        <variable
+            name="listener"
+            type="com.example.android.politicalpreparedness.election.adapter.ElectionListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:onClick="@{() -> listener.onClick(election)}">
+
+        <TextView
+            android:id="@+id/tv_election_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="@{election.name}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Google Test Election"/>
+
+        <TextView
+            android:id="@+id/tv_election_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginTop="4dp"
+            android:text="@{election.electionDay.toLocaleString()}"
+            app:layout_constraintStart_toStartOf="@id/tv_election_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_election_name"
+            tools:text="Sun Jun 06 00:00:00 GMT+02:00 2033"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

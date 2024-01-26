@@ -2,6 +2,31 @@
 <resources>
     <string name="app_name">Political Preparedness</string>
 
-    <!-- TODO: Add necessary string values -->
+    <string name="state_header_string">Election Information:</string>
+    <string name="state_locations_string">Voting Locations:</string>
+    <string name="state_ballot_string">Ballot Information:</string>
+    <string name="state_correspondence_header_string">Correspondence Address:</string>
+    <string name="permission_required_dialog_title">Location permission is needed to get your address</string>
+    <string name="permission_required_dialog_text">If you want the app to automagically figure out your address from your location, it really needs this permission</string>
+    <string name="location_permission_denied_explanation">To get your address from your location, you need to grant location permission.</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="twitter_button">twitter button</string>
+    <string name="facebook_button">facebook button</string>
+    <string name="web_button">web button</string>
+    <string name="frag_launch_button_find">Find my representatives</string>
+    <string name="frag_launch_button_upcoming">Upcoming elections</string>
+    <string name="frag_launch_image_voting">image voting</string>
+    <string name="frag_elections_saved">Saved Elections</string>
+    <string name="item_representative_profile">representative official profile picture</string>
+    <string name="frag_rep_search">Representative Search</string>
+    <string name="frag_rep_address_line_1">Address Line 1</string>
+    <string name="frag_rep_address_line_2">Address Line 2</string>
+    <string name="frag_rep_city">City</string>
+    <string name="frag_rep_zip">Zip</string>
+    <string name="frag_rep_button_find_my_representatives">Find my representatives</string>
+    <string name="frag_rep_buttton_use_my_location">Use my location</string>
+    <string name="frag_rep_header_my_representatives">My Representatives</string>
+
 
 </resources>

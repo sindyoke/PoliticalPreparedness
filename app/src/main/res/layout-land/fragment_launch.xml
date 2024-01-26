@@ -11,42 +11,43 @@
 
         <ImageView
             android:id="@+id/fraglaunch_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/fraglaunch_btn_elections"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_large"
+            android:contentDescription="@string/frag_launch_image_voting"
             android:src="@drawable/ballot_logo"
-            android:contentDescription="@string/frag_launch_image_voting" />
+            app:layout_constraintBottom_toTopOf="@id/fraglaunch_btn_elections"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/fraglaunch_btn_elections"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_medium"
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"
             android:background="@color/colorPrimary"
-            android:textColor="@color/white"
             android:text="@string/frag_launch_button_upcoming"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/fraglaunch_btn_repres"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/fraglaunch_btn_repres"/>
+            app:layout_constraintStart_toEndOf="@+id/fraglaunch_image"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <Button
             android:id="@+id/fraglaunch_btn_repres"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/frag_launch_button_find"
+            android:layout_marginTop="@dimen/margin_large"
             android:layout_marginBottom="@dimen/margin_medium"
-            android:layout_marginStart="@dimen/margin_large"
-            android:layout_marginEnd="@dimen/margin_large"
             android:background="@color/colorPrimary"
+            android:text="@string/frag_launch_button_find"
             android:textColor="@color/white"
-             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/fraglaunch_btn_elections"
+            app:layout_constraintStart_toStartOf="@id/fraglaunch_btn_elections"
+            app:layout_constraintTop_toBottomOf="@id/fraglaunch_btn_elections" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

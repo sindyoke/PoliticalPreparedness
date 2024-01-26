@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="representative"
+            type="com.example.android.politicalpreparedness.representative.model.Representative" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <ImageView
+            android:id="@+id/item_rep_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            profileImage="@{representative.official.photoUrl}"
+            android:contentDescription="@string/item_representative_profile" />
+
+        <TextView
+            android:id="@+id/item_rep_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="@{representative.office.name}"
+            app:layout_constraintStart_toEndOf="@id/item_rep_profile"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="President of the United States"/>
+
+        <TextView
+            android:id="@+id/item_rep_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@{representative.official.name}"
+            app:layout_constraintStart_toStartOf="@id/item_rep_role"
+            app:layout_constraintTop_toBottomOf="@id/item_rep_role"
+            tools:text="Donald Trump"/>
+
+        <TextView
+            android:id="@+id/item_rep_party"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@{representative.official.party}"
+            app:layout_constraintStart_toStartOf="@id/item_rep_role"
+            app:layout_constraintTop_toBottomOf="@id/item_rep_name"
+            tools:text="Republican Party"/>
+
+        <ImageView
+            android:id="@+id/item_rep_twitterbtn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:scaleType="centerCrop"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_twitter"
+            android:contentDescription="@string/twitter_button" />
+
+        <ImageView
+            android:id="@+id/item_rep_facebookbtn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/item_rep_twitterbtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:scaleType="centerCrop"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_facebook"
+            android:contentDescription="@string/facebook_button" />
+
+        <ImageView
+            android:id="@+id/item_rep_webbtn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/item_rep_facebookbtn"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:scaleType="centerCrop"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_www"
+            android:contentDescription="@string/web_button" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

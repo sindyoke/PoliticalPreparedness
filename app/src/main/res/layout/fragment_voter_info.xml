@@ -3,54 +3,66 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Add data binding node for Voter Info ViewModel -->
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.android.politicalpreparedness.election.VoterInfoViewModel" />
+        <variable
+            name="state_electionAdministrationBody"
+            type="com.example.android.politicalpreparedness.network.models.AdministrationBody" />
+        <import type="android.view.View"/>
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
-        <!-- TODO: Add title to toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/election_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_padding"
             android:singleLine="true"
+            app:title="@{viewModel.election.name}"
+            app:titleTextColor="@color/colorPrimary"
+            tools:text="Google Example Election"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- TODO: Add visual styling -->
         <TextView
             android:id="@+id/election_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/fragment_textview"
             android:layout_margin="@dimen/default_padding"
             app:layout_constraintTop_toBottomOf="@id/election_name"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@{viewModel.election.electionDay.toLocaleString()}"
             tools:text="12 November 2055" />
 
-        <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/state_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/fragment_textview"
+            android:text="@string/state_header_string"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/election_date"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
-        <!-- TODO: Add click binding to open web URL -->
-        <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/state_locations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/fragment_textview"
+            tools:text="@string/state_locations_string"
+            android:autoLink="web"
+            android:text="@{viewModel.stateElectionAdministrationBody.votingLocationFinderUrl}"
+            app:clickableLink="@{viewModel.stateElectionAdministrationBody.votingLocationFinderUrl}"
             app:layout_constraintTop_toBottomOf="@id/state_header"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
-        <!-- TODO: Add click binding to open web URL -->
-        <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/state_ballot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/fragment_textview"
+            tools:text="@string/state_ballot_string"
+            android:autoLink="web"
+            android:text="@{viewModel.stateElectionAdministrationBody.ballotInfoUrl}"
+            app:clickableLink="@{viewModel.stateElectionAdministrationBody.ballotInfoUrl}"
             app:layout_constraintTop_toBottomOf="@id/state_locations"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
@@ -60,23 +72,36 @@
             android:layout_height="wrap_content"
             app:constraint_referenced_ids="state_correspondence_header,address" />
 
-        <!-- TODO: Add visual styling and content -->
         <TextView
             android:id="@+id/state_correspondence_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/fragment_textview"
+            android:text='@{viewModel.stateElectionAdministrationBody.correspondenceAddress!=null ? @string/state_correspondence_header_string : ""}'
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/state_ballot"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
-        <!-- TODO: Add data binding -->
         <TextView
             android:id="@+id/address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/fragment_textview"
+            tools:text="Address"
+            android:text="@{viewModel.stateElectionAdministrationBody.correspondenceAddress.toFormattedString()}"
             app:layout_constraintTop_toBottomOf="@id/state_correspondence_header"
             app:layout_constraintStart_toStartOf="@id/election_date" />
 
-        <!-- TODO: Add button to save election to Room -->
+        <Button
+            android:id="@+id/fragvoterinfo_btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:text='@{viewModel.electionIsSaved == false ? "Follow election" : "Unfollow election"}'
+            android:onClick="@{(view) -> viewModel.onButtonClick()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,26 +1,49 @@
 package com.example.android.politicalpreparedness.representative
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.Repository
+import com.example.android.politicalpreparedness.network.models.Address
+import com.example.android.politicalpreparedness.representative.model.Representative
+import kotlinx.coroutines.launch
+import timber.log.Timber
+class RepresentativeViewModel(private val repository: Repository) : ViewModel() {
 
-class RepresentativeViewModel: ViewModel() {
+    private val _representatives = MutableLiveData<List<Representative>?>()
+    val representatives: LiveData<List<Representative>?>
+        get() = _representatives
 
-    //TODO: Establish live data for representatives and address
+    private val _address = MutableLiveData<Address>()
+    val address: LiveData<Address>
+        get() = _address
 
-    //TODO: Create function to fetch representatives from API from a provided address
+    init {
+        _address.value = Address("", "", "", "", "")
+    }
 
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
+    fun fetchRepresentatives(addressString: String) {
+        viewModelScope.launch {
+            try {
+                val (offices, officials) = repository.getRepresentatives(addressString)
+                _representatives.value =
+                    offices.flatMap { office -> office.getRepresentatives(officials) }
+            } catch (e: Exception) {
+                _representatives.value = null
+            }
+        }
+    }
 
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
+    fun getAddressFromGeolocation (address: Address) {
+        _address.value = address
+    }
 
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
+    fun setState(stateSelected: String) {
+        _address.value!!.state = stateSelected
+    }
 
-     */
-
-    //TODO: Create function get address from geo location
-
-    //TODO: Create function to get address from individual fields
+// DONE: Create function to get address from individual fields
+// - no need, everything is set from two way binding, just state from code
 
 }
