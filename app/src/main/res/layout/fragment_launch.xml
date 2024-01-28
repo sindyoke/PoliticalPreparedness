@@ -28,7 +28,7 @@
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"
             android:background="@color/colorPrimary"
-            android:textColor="@color/white"
+            android:textColor="@color/button_text_color"
             android:text="@string/frag_launch_button_upcoming"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
             android:layout_marginStart="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_large"
             android:background="@color/colorPrimary"
-            android:textColor="@color/white"
+            android:textColor="@color/button_text_color"
              app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

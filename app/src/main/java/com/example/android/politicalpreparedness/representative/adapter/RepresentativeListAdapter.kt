@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -14,6 +15,7 @@ import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.databinding.ItemRepresentativeBinding
 import com.example.android.politicalpreparedness.network.models.Channel
 import com.example.android.politicalpreparedness.representative.model.Representative
+import timber.log.Timber
 
 class RepresentativeListAdapter : ListAdapter<Representative, RepresentativeViewHolder>(RepresentativeDiffCallback){
 
@@ -60,7 +62,11 @@ class RepresentativeViewHolder(val binding: ItemRepresentativeBinding): ViewHold
     }
 
     private fun showWWWLinks(urls: List<String>) {
-        enableLink(binding.itemRepWebbtn, urls.first())
+        if(urls.isNotEmpty()) {
+            enableLink(binding.itemRepWebbtn, urls.first())
+        } else {
+            Timber.d("list of urls is empty")
+        }
     }
 
     private fun getFacebookUrl(channels: List<Channel>): String? {

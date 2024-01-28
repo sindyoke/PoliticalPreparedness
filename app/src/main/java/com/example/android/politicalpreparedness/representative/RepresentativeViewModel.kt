@@ -23,6 +23,10 @@ class RepresentativeViewModel(private val repository: Repository) : ViewModel() 
         _address.value = Address("", "", "", "", "")
     }
 
+    fun setRepresentatives(list: List<Representative>) {
+        _representatives.value = list
+    }
+
     fun fetchRepresentatives(addressString: String) {
         viewModelScope.launch {
             try {

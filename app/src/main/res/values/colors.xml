@@ -6,4 +6,5 @@
     <color name="white">#FFFFFF</color>
     <color name="gray50">#7F7F7F</color>
     <color name="purple50">#9C27B0</color>
+    <color name="button_text_color">@color/white</color>
 </resources>

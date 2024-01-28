@@ -6,11 +6,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.provider.Settings
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -25,6 +25,7 @@ import com.example.android.politicalpreparedness.databinding.FragmentRepresentat
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.example.android.politicalpreparedness.representative.adapter.setNewValue
+import com.example.android.politicalpreparedness.representative.model.Representative
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
@@ -36,6 +37,11 @@ class DetailFragment : Fragment() {
     companion object {
         private const val REQUEST_LOCATION_PERMISSION = 222
         const val MOTION_LAYOUT_STATE_KEY = "MOTION_LAYOUT_STATE_KEY"
+        private const val ADDRESS1_KEY = "ADDRESS1_KEY"
+        private const val ADDRESS2_KEY = "ADDRESS2_KEY"
+        private const val CITY_KEY = "CITY_KEY"
+        private const val ZIP_KEY = "ZIP_KEY"
+        private const val REP_LIST_KEY = "REP_LIST_KEY"
     }
 
     private lateinit var viewModel: RepresentativeViewModel
@@ -43,6 +49,7 @@ class DetailFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var address: Address
     private lateinit var representativesAdapter: RepresentativeListAdapter
+    private var representativesList: List<Representative>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,8 +72,20 @@ class DetailFragment : Fragment() {
         representativesAdapter = RepresentativeListAdapter()
         binding.fragRepRv.adapter = representativesAdapter
 
+        if(savedInstanceState != null) {
+            binding.addressLine1.setText(savedInstanceState.getString(ADDRESS1_KEY))
+            binding.addressLine2.setText(savedInstanceState.getString(ADDRESS2_KEY))
+            binding.city.setText(savedInstanceState.getString(CITY_KEY))
+            binding.zip.setText(savedInstanceState.getString(ZIP_KEY))
+            binding.motionLayout.transitionToState(savedInstanceState.getInt(MOTION_LAYOUT_STATE_KEY))
+
+            representativesList = savedInstanceState.getParcelableArrayList(REP_LIST_KEY)
+            representativesList?.let { viewModel.setRepresentatives(it) }
+        }
+
         viewModel.representatives.observe(viewLifecycleOwner) {
             representativesAdapter.submitList(it)
+            representativesList = it
         }
 
         binding.buttonSearch.setOnClickListener { runFieldSearch() }
@@ -85,23 +104,29 @@ class DetailFragment : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        val orientation = resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // In landscape
-        } else {
-            // In portrait
-            Timber.d("MOTION_LAYOUT_STATE_KEY: ${binding.motionLayout.transitionState}")
-            val motionLayoutState = binding.motionLayout.transitionState
-            super.onSaveInstanceState(outState)
-            outState.putBundle(MOTION_LAYOUT_STATE_KEY, motionLayoutState)
-        }
+
+        Timber.d("transitionState: ${binding.motionLayout.transitionState}")
+        Timber.d("currentState: ${binding.motionLayout.currentState}")
+        outState.putInt(MOTION_LAYOUT_STATE_KEY, binding.motionLayout.currentState)
+
+        outState.putString(ADDRESS1_KEY, binding.addressLine1.text.toString())
+        outState.putString(ADDRESS2_KEY, binding.addressLine2.text.toString())
+        outState.putString(CITY_KEY, binding.city.text.toString())
+        outState.putString(ZIP_KEY, binding.zip.text.toString())
+        outState.putParcelableArrayList(REP_LIST_KEY, viewModel.representatives.value as ArrayList<out Parcelable>)
+
+        super.onSaveInstanceState(outState)
     }
 
     private fun runFieldSearch() {
         Timber.d("buttonSearch clicked")
         hideKeyboard()
-        if(isNotValidEntry()) {
-            Toast.makeText(activity, "Fill out obligatory fields: address line 1, city and zip", Toast.LENGTH_SHORT).show()
+        if (isNotValidEntry()) {
+            Toast.makeText(
+                activity,
+                "Fill out obligatory fields: address line 1, city and zip",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
         val stateSelected = binding.state.selectedItem
@@ -131,7 +156,7 @@ class DetailFragment : Fragment() {
         if (REQUEST_LOCATION_PERMISSION == requestCode) {
             if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 getLocation()
-            } else if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                 Toast.makeText(
                     requireActivity(),
                     R.string.location_permission_denied_explanation,
