@@ -71,12 +71,14 @@ class DetailFragment : Fragment() {
 
         representativesAdapter = RepresentativeListAdapter()
         binding.fragRepRv.adapter = representativesAdapter
+        binding.executePendingBindings()
 
         if(savedInstanceState != null) {
-            binding.addressLine1.setText(savedInstanceState.getString(ADDRESS1_KEY))
-            binding.addressLine2.setText(savedInstanceState.getString(ADDRESS2_KEY))
-            binding.city.setText(savedInstanceState.getString(CITY_KEY))
-            binding.zip.setText(savedInstanceState.getString(ZIP_KEY))
+            viewModel.address.value?.line1 ?: savedInstanceState.getString(ADDRESS1_KEY)
+            viewModel.address.value?.line2 ?: savedInstanceState.getString(ADDRESS2_KEY)
+            viewModel.address.value?.city ?: savedInstanceState.getString(CITY_KEY)
+            viewModel.address.value?.zip ?: savedInstanceState.getString(ZIP_KEY)
+
             binding.motionLayout.transitionToState(savedInstanceState.getInt(MOTION_LAYOUT_STATE_KEY))
 
             representativesList = savedInstanceState.getParcelableArrayList(REP_LIST_KEY)
@@ -94,32 +96,29 @@ class DetailFragment : Fragment() {
         fusedLocationClient =
             LocationServices.getFusedLocationProviderClient(requireActivity())
 
-//        viewModel.representatives.observe(viewLifecycleOwner) { representativeList ->
-//            Timber.d("in Fragment, list of representatives:")
-//            representativeList!!.forEach {
-//                Timber.d("representative> office: ${it.office} ${it.official}")
-//            }
-//        }
         return binding.root
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
 
-        Timber.d("transitionState: ${binding.motionLayout.transitionState}")
-        Timber.d("currentState: ${binding.motionLayout.currentState}")
         outState.putInt(MOTION_LAYOUT_STATE_KEY, binding.motionLayout.currentState)
 
         outState.putString(ADDRESS1_KEY, binding.addressLine1.text.toString())
         outState.putString(ADDRESS2_KEY, binding.addressLine2.text.toString())
         outState.putString(CITY_KEY, binding.city.text.toString())
         outState.putString(ZIP_KEY, binding.zip.text.toString())
-        outState.putParcelableArrayList(REP_LIST_KEY, viewModel.representatives.value as ArrayList<out Parcelable>)
+
+        if(viewModel.representatives.value != null) {
+            outState.putParcelableArrayList(
+                REP_LIST_KEY,
+                viewModel.representatives.value as ArrayList<out Parcelable>
+            )
+        }
 
         super.onSaveInstanceState(outState)
     }
 
     private fun runFieldSearch() {
-        Timber.d("buttonSearch clicked")
         hideKeyboard()
         if (isNotValidEntry()) {
             Toast.makeText(
@@ -141,7 +140,6 @@ class DetailFragment : Fragment() {
     }
 
     private fun runLocationSearch() {
-        Timber.d("buttonLocation clicked")
         hideKeyboard()
         checkLocationPermissions()
     }
@@ -192,7 +190,6 @@ class DetailFragment : Fragment() {
     }
 
     private fun checkLocationPermissions() {
-        Timber.d("checkLocationPermissions entered")
         if (isPermissionGranted()) {
             getLocation()
         } else {
